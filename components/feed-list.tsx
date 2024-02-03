@@ -3,6 +3,7 @@ import { useState } from "react";
 import PostCard from './feed-post-card';
 import NewPostCard from './new-post-card';
 import { getHomePosts, getUserPosts } from "@/actions/actions";
+import { Loader } from 'lucide-react';
 
 export default function FeedList({
   posts,
@@ -49,9 +50,9 @@ export default function FeedList({
 
   if (postsLoading) {
     return (
-        <div>spinner paceholder</div>
+        <Loader />
     );
-  }
+  } 
   const allPosts = parsedPosts.map((postObj) => (
     <PostCard
       key={postObj._id}

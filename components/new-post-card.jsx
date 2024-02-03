@@ -104,7 +104,7 @@ const NewPostCard = ({ user }) => {
                   name="image"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Profile Image</FormLabel>
+                      <FormLabel>Post Image</FormLabel>
                       <FormControl>
                         <FileUpload
                           value={field.value}

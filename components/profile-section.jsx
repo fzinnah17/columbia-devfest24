@@ -124,7 +124,7 @@ export default function ProfileSection({ edit, stringData }) {
           <span>@{userData.username}</span>
         </div>
       </div>
-      <div className="self-end">
+      <div className="self-center">
         {!edit && friendRequestStatus !== "received" && (
           <div className="col mt-auto">
             {friendRequestStatus !== "friends" && (

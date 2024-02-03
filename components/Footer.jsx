@@ -44,7 +44,7 @@ const Footer = () => {
                     CU Hackathon Team
                 </a>{" "}
             </p>
-            <p className="footer-bottom-text">© 2024 DevFest</p>
+            <p className="footer-bottom-text">Â© 2024 DevFest</p>
 
         </footer>
     );

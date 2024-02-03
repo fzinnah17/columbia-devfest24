@@ -21,6 +21,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "hooks/useHomePosts.js", "components/Footer.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "hooks/useHomePosts.js", "components/Footer.jsx", "app/(auth)/layout.jsx", "app/(main)/layout.jsx", "components/mode-toggle.jsx", "components/NavBar.jsx", "components/profile-dropdown.jsx"],
   "exclude": ["node_modules"]
 }

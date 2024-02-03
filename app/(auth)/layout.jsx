@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 const RootLayout = ({ children }) => {
   const { data: session } = useSession();
   const [isClient, setIsClient] = useState(false);
-  
+
   useEffect(() => {
     setIsClient(true);
   }, []);

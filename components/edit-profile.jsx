@@ -27,18 +27,18 @@ import { Button } from "@/components/ui/button";
 import { Pencil } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { FileUpload } from "./file-upload";
+import { updateProfileSchema } from "@/schemas";
+import { updateProfile } from "@/actions/actions";
 
-const formSchema = z.object({
-  name: z.string().optional(),
-  url: z.string().optional(),
-});
+
 
 const EditProfile = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const router = useRouter();
   const form = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(updateProfileSchema),
     defaultValues: {
       name: "",
       url: "",
@@ -48,20 +48,26 @@ const EditProfile = () => {
   const handleSubmit = async (values) => {
     setIsSubmitting(true);
 
-    const res = await fetch("/api/profile", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(values),
-    });
-    const data = await res.json();
-    if (res.status === 201) {
-      router.refresh();
-      location.reload();
-    } else {
-      console.log(data);
-      setError("A server error occurred.");
+    // const res = await fetch("/api/profile", {
+    //   method: "PUT",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(values),
+    // });
+    // const data = await res.json();
+    // if (res.status === 201) {
+    //   router.refresh();
+    //   location.reload();
+    // } else {
+    //   console.log(data);
+    //   setError("A server error occurred.");
+    // }
+    try {
+        await updateProfile(values);
+        location.reload();     // refresh profile page after updating
+    } catch (err) {
+        setError(err);
     }
   };
 
@@ -108,15 +114,14 @@ const EditProfile = () => {
                 name="url"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor="url">Profile image URL</FormLabel>
+                    <FormLabel htmlFor="url">Profile image</FormLabel>
                     <FormControl>
-                      <Input
-                        id="url"
-                        className="mt-1 block w-full rounded-md bg-gray-100 dark:bg-gray-700 focus:outline-none"
-                        disabled={isSubmitting}
-                        {...field}
-                      />
-                    </FormControl>
+                        <FileUpload
+                          value={field.value}
+                          onChange={field.onChange}
+                          endpoint={'authorizedImage'}
+                        />
+                      </FormControl>
                   </FormItem>
                 )}
               />
@@ -126,8 +131,7 @@ const EditProfile = () => {
                   <Button
                     disabled={
                       isSubmitting ||
-                      (!form.getValues().name.trim() &&
-                        !form.getValues().url.trim())
+                      (!form.getValues().name.trim())
                     }
                     className="mt-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 dark:bg-blue-400 hover:bg-blue-700 dark:hover:bg-blue-500 focus:outline-none"
                     type="submit"
