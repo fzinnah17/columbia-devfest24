@@ -1,10 +1,10 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 #model configuration
-ml/path_to_save_model
+ml/path_to_save_model (too big)
 
 #datasets that are too large
-ml/very large datasets
+ml/very large datasets (too big)
 
 
 #ml testing files
