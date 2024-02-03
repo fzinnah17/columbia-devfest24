@@ -1,13 +1,14 @@
 "use client";
 
-import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { useState, useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { FileUpload } from "../file-upload";
 import { signIn } from "next-auth/react";
+
 import { useRouter } from "next/navigation";
 
-import { LoginSchema } from "@/schemas";
+import { RegisterSchema } from "@/schemas";
 import { Input } from "@/components/ui/input";
 import {
   Form,
@@ -21,49 +22,53 @@ import { CardWrapper } from "@/components/auth/card-wrapper"
 import { Button } from "@/components/ui/button";
 import { FormError } from "../form-error";
 import { FormSuccess } from "../form-success";
-// import { login } from "@/actions/login";
+import { createUser } from "@/actions/actions";
 
-export const LoginForm = () => {
+export const RegisterForm = () => {
   const router = useRouter();
 
-  const [error, setError] = useState<string | undefined>("");
-  const [success, setSuccess] = useState<string | undefined>("");
+  const [error, setError] = useState("");
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof LoginSchema>>({
-    resolver: zodResolver(LoginSchema),
+  const form = useForm({
+    resolver: zodResolver(RegisterSchema),
     defaultValues: {
       username: "",
       password: "",
+      name: "",
+      profilePicUrl: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+  const onSubmit = (values) => {
     setError("");
-    setSuccess("");
+    
     
     startTransition(() => {
-      async function logIn() {
-        const res = await signIn('credentials', {
-          redirect: false,
-          username: values.username,
-          password: values.password
-        })
-        if (res && res.error) {
-          setError(res.error);
+      async function create() {
+        try {
+          const userString = await createUser(values);
+          const user = JSON.parse(userString)
+          const res = await signIn("credentials", {
+            redirect: true,
+            username: user.username,
+            password: user.password,
+            callbackUrl: "/home", // should redirect to home page after successful signup
+          });
+          // router.push('/home');
+        } catch (err) {
+          setError(err.message);
         }
-        // if log in success, redirect to landing page
-        router.push('/home');
       }
-      logIn();
+      create();
     });
   };
 
   return (
     <CardWrapper
-      headerLabel="Happening now"
-      backButtonLabel="Don't have an account?"
-      backButtonHref="/register"
+      headerLabel="Create an account"
+      backButtonLabel="Already have an account?"
+      backButtonHref="/"
       showSocial
     >
       <Form {...form}>
@@ -74,10 +79,26 @@ export const LoginForm = () => {
            <div className="space-y-4">
               <FormField
                   control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Name*</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          disabled={isPending}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
                   name="username"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Username</FormLabel>
+                      <FormLabel>Username*</FormLabel>
                       <FormControl>
                         <Input
                           {...field}
@@ -93,7 +114,7 @@ export const LoginForm = () => {
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Password</FormLabel>
+                      <FormLabel>Password*</FormLabel>
                       <FormControl>
                         <Input
                           {...field}
@@ -106,16 +127,33 @@ export const LoginForm = () => {
                     </FormItem>
                   )}
                 />
+                <FormField
+                  control={form.control}
+                  name="profilePicUrl"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Profile Image</FormLabel>
+                      <FormControl>
+                        <FileUpload
+                          endpoint={'newUserImage'}
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                
 
            </div>
           <FormError message={error} />
-          <FormSuccess message={success} />
+          {/* <FormSuccess message={success} /> */}
           <Button
             disabled={isPending}
             type="submit"
             className="w-full"
           >
-            Login
+            Create an account
           </Button>
         </form>
       </Form>

@@ -6,6 +6,7 @@ import * as z from "zod";
 import { createNewPost } from "@/actions/actions";
 import { useRouter } from "next/navigation";
 import { FileUpload } from "./file-upload";
+import { FormSuccess } from "./form-success";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -46,7 +47,6 @@ const NewPostCard = ({ user }) => {
   });
 
   const handleSubmit = async (values) => {
-    console.log(values);
     setIsSubmitting(true);
     await createNewPost(values);
     router.refresh();
@@ -104,7 +104,7 @@ const NewPostCard = ({ user }) => {
                   name="image"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Post Image</FormLabel>
+                      <FormLabel>Profile Image</FormLabel>
                       <FormControl>
                         <FileUpload
                           value={field.value}
@@ -116,7 +116,7 @@ const NewPostCard = ({ user }) => {
                   )}
                 />
               <DialogFooter>
-                {success && <FormDescription>Success</FormDescription>}
+                {success && <FormSuccess message="Success" />}
                 <div className="flex items-center space-x-4">
                         <Button
                             disabled={isSubmitting}

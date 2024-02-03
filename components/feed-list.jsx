@@ -2,8 +2,8 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 import PostCard from './feed-post-card';
 import NewPostCard from './new-post-card';
-import { getHomePosts, getUserPosts } from "@/actions/actions";
-import { Loader } from 'lucide-react';
+import { getHomePosts, getUserPosts, getAllPosts } from "@/actions/actions";
+import { Button } from "./ui/button";
 
 export default function FeedList({
   posts,
@@ -25,7 +25,7 @@ export default function FeedList({
     let res;
     switch (feedType) {
       case "all":
-        res = await fetch(`/api/posts?startId=${startId}`);
+        res = await getAllPosts(startId);
         break;
       case "profile":
         res = await getUserPosts(session.user.userId, startId);
@@ -40,7 +40,6 @@ export default function FeedList({
         break;
     }
     const data = JSON.parse(res); // convert back
-    console.log(data);
     if (data.length < 10) {
       setNewEndOfFeed(true);
     }
@@ -49,10 +48,8 @@ export default function FeedList({
   };
 
   if (postsLoading) {
-    return (
-        <Loader />
-    );
-  } 
+    return null;
+  }
   const allPosts = parsedPosts.map((postObj) => (
     <PostCard
       key={postObj._id}
@@ -80,14 +77,13 @@ export default function FeedList({
         {!newEndOfFeed && !endOfFeed ? (
           <div className="d-flex justify-content-center">
             {morePostsLoading ? (
-              <div>loader placeholder</div>
+              null
             ) : (
-              <button
-                className="btn btn-outline-secondary"
+              <Button
                 onClick={fetchMorePostsFromLastId}
               >
                 Load posts
-              </button>
+              </Button>
             )}
           </div>
         ) : (

@@ -4,11 +4,10 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import connectToDB from "@/db";
 import bcrypt from "bcryptjs";
 import { LoginSchema } from "@/schemas";
-import { NextAuthOptions } from "next-auth";
 import User from "@/models/User";
 
 
-export const authOptions : NextAuthOptions = {
+export const authOptions = {
     pages: {
       signIn: '/',
       signOut: '/',
@@ -52,7 +51,7 @@ export const authOptions : NextAuthOptions = {
       strategy: "jwt",
     },
     callbacks: {
-      async signIn({ user, account } : any) : Promise<any> {
+      async signIn({ user, account }){
         // Google login: finding an existing account or creating a new account
         // in the database with the provided name, username and profilePicUrl provided by google
         if (account.provider === "google") {
@@ -73,7 +72,7 @@ export const authOptions : NextAuthOptions = {
       },
       // transfer user data to token object
       // dont transfer anything that could be changed once the user has logged in
-      async jwt({ token, user, account } : any) {
+      async jwt({ token, user, account }) {
         if (account?.provider === "google") {
           //token.accessToken = user.token;
           // see what user is first
@@ -88,7 +87,7 @@ export const authOptions : NextAuthOptions = {
         return token;
       },
       // transfer token data to session object
-      async session({ session, token } : any) {
+      async session({ session, token }) {
         session.user.userId = token.userId;
         session.user.username = token.username;
         // session only stores userId and username

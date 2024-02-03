@@ -1,24 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
-// import NewPostCard from "./NewPostCard";
-// import FeedList from "./FeedList";
-// import useHomePosts from "@/hooks/useHomePosts";
-import { createNewPost } from "@/actions/actions";
 import FeedList from "./feed-list";
 
 import { useRouter } from "next/navigation";
 
 
-type HomeFeedProps = {
-    feedType : 'all' | 'home' | 'profile' | 'user';
-    initialPosts: string;
-    authuserData: string;
-}
-
 // feedType: 'all' || 'home' || 'profile' || 'user'
-export default function HomeFeed({ feedType, initialPosts, authuserData } : HomeFeedProps) {
+export default function HomeFeed({ feedType, initialPosts, authuserData }) {
     const router = useRouter();
 
     const [posts, setPosts] = useState([]);
@@ -40,8 +29,6 @@ export default function HomeFeed({ feedType, initialPosts, authuserData } : Home
 
 
     
-    // const displayedPosts = posts.map((post, ind) => <div key={ind}>{post.content} made by {post.user.username}</div>)
-    // console.log(typeof posts)
   return (
     <main className="w-full">
         <FeedList posts={posts} setPosts={setPosts} postsLoading={postsLoading} authuserData={authuserData} feedType={feedType} endOfFeed={endOfFeed} />

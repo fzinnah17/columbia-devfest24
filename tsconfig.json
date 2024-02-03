@@ -3,7 +3,7 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": true,
+    "strict": false,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
@@ -21,6 +21,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "hooks/useHomePosts.js", "components/Footer.jsx", "app/(auth)/layout.jsx", "app/(main)/layout.jsx", "components/mode-toggle.jsx", "components/NavBar.jsx", "components/profile-dropdown.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "hooks/useHomePosts.js", "components/Footer.jsx", "app/(auth)/layout.jsx", "app/(main)/layout.jsx", "components/mode-toggle.jsx", "components/NavBar.jsx", "components/profile-dropdown.jsx", "actions/actions.js", "app/(auth)/register/page.jsx", "app/(auth)/page.jsx", "app/(main)/home/page.jsx", "app/(main)/profile/page.jsx", "app/layout.jsx", "app/api/auth/[...nextauth]/route.js", "app/api/uploadthing/core.js", "app/api/uploadthing/route.js", "components/auth/back-button.jsx", "components/auth/card-wrapper.jsx", "components/auth/header.jsx", "components/auth/login-form.jsx", "components/auth/register-form.jsx", "components/auth/social.jsx", "components/feed-list.jsx", "components/file-upload.jsx", "components/form-error.jsx", "components/form-success.jsx", "components/homefeed.jsx", "components/Provider.jsx", "components/SliderDemo.jsx", "components/theme-provider.jsx", "tailwind.config.js", "lib/utils.js"],
   "exclude": ["node_modules"]
 }

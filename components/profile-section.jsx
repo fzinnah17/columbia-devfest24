@@ -5,9 +5,10 @@ import EditProfile from './edit-profile';
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import Image from "next/image";
+import { Loader } from "lucide-react";
 
 export default function ProfileSection({ edit, stringData }) {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const [userData, getUserData] = useState({});
   const [friendRequestStatus, setFriendRequestStatus] = useState("none");
   const [isLoading, setIsLoading] = useState(false);
@@ -103,6 +104,8 @@ export default function ProfileSection({ edit, stringData }) {
     }
     setIsLoading(false);
   }
+
+  if (status === 'loading') return <Loader className="m-auto animate-spin" />
 
   return (
     <div className="flex justify-between items-center max-w-2xl w-full m-auto">

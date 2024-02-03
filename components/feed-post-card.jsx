@@ -68,7 +68,7 @@ const PostCard = ({ post, user }) => {
       <div className="mt-3 text-base text-gray-700 dark:text-gray-300 break-all">
         {post.content}
       </div>
-      {post.image && <Image alt='post image' className="w-full !max-h-[300px]" src={post.image} height={300} width={'300'} />}
+      {post.image && <Image alt='post image' className="w-full !max-h-[300px] rounded-sm" src={post.image} height={300} width={'300'} />}
       {/* <Comments
         postId={post._id}
         postComments={postComments}

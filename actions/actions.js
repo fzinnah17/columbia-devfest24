@@ -9,11 +9,12 @@ import bcrypt from "bcryptjs";
 import { RegisterSchema, formSchema } from "@/schemas";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { updateProfileSchema } from "@/schemas";
 
 Comment 
 Like
 
- export async function createUser(userDetails : { name : string; username: string; password: string; profilePicUrl?: string}) {
+ export async function createUser(userDetails) {
     // Destructure the userDetails to extract the required fields
     const validatedFields = RegisterSchema.safeParse(userDetails);
     if (validatedFields.success) {
@@ -46,7 +47,7 @@ Like
     
   }
 
-  export async function getProfileUrl(userId : string) {
+  export async function getProfileUrl(userId) {
     await connectToDB();
     try {
       // Attempt to find the user by their ID
@@ -63,12 +64,8 @@ Like
     }
   }
 
- export async function getHomePosts(userId : string, startId? : string) {
+ export async function getHomePosts(userId, startId) {
   await connectToDB();
-  // console.log('Post model:', mongoose.models.Post);
-  // console.log('Like model:', mongoose.models.Like);
-  // console.log('Comment model:', mongoose.models.Comment);
-  // console.log('User model:', mongoose.models.User);
     const currentUser = await User.findById(userId);
     // all your posts and your friends' posts
     const usersIds = [currentUser._id, ...currentUser.friends];
@@ -92,7 +89,6 @@ Like
             });
           // input posts in ML api. It will return all home feed posts that align with your 
           // slider. If there are 11 posts, nextCursor is 10th post's id, else dont return cursor
-            console.log('POTST ARE ', posts);
           return JSON.stringify(posts);
       }
       else {
@@ -124,7 +120,59 @@ Like
     }
   }
 
-export async function getUser(userId : string) {
+export async function getAllPosts(startId) {
+    await connectToDB();
+    if (startId) {
+      try {
+        const posts = await Post.find()
+          .where("_id")
+          .lt(startId)
+          .sort({ _id: -1 })
+          .limit(10)        // remove when ml api ready
+          .populate("user")
+          .populate({
+            path: "likes",
+            populate: {
+              path: "user",
+            },
+          })
+          .populate({
+            path: "comments",
+            populate: {
+              path: "user",
+            },
+          });
+
+          return JSON.stringify(posts);
+      } catch (err) {
+        throw new Error(err);
+      }
+    } else {
+      try {
+        const posts = await Post.find()
+          .sort({ _id: -1 })
+          .limit(10)      // remove 
+          .populate("user")
+          .populate({
+            path: "likes",
+            populate: {
+              path: "user",
+            },
+          })
+          .populate({
+            path: "comments",
+            populate: {
+              path: "user",
+            },
+          });
+          return JSON.stringify(posts);
+      } catch (err) {
+        throw new Error(err);
+      }
+    }
+  }
+
+export async function getUser(userId) {
   await connectToDB();
     try {
       const user = await User.findById(userId).populate(
@@ -194,7 +242,7 @@ else {
 }
 }
 
-export async function getUserPosts(userId : string, startId? : string) {
+export async function getUserPosts(userId, startId) {
   await connectToDB();
     const currentUser = await User.findById(userId);
     try {
@@ -248,3 +296,27 @@ export async function getUserPosts(userId : string, startId? : string) {
       throw new Error(`Error fetching home feed: ${err}`);
     }
   }
+
+  export async function updateProfile(userDetails) {
+    const session = await getServerSession(authOptions);
+    const userId = session?.user.userId;
+    const validatedFields = updateProfileSchema.safeParse(userDetails);
+    if (validatedFields.success) {
+      try {
+        await connectToDB();
+        const { name, url } = validatedFields.data;
+        // name and pic both updated
+        if (name && url) {
+          const user = await User.findByIdAndUpdate(userId, {
+            name : name,
+            profilePicUrl : url,
+          });
+        }
+        // only name is updated
+        else {          
+          const user = await User.findByIdAndUpdate(userId, {name : name});
+        }
+      } catch (err) {
+        throw new Error(err);
+      }
+  }}
