@@ -32,3 +32,8 @@ export const formSchema = z.object({
   ),
   image: z.string().optional(),
 });
+
+export const updateProfileSchema = z.object({
+  name: z.string().optional(),
+  url: z.string().optional(),
+});

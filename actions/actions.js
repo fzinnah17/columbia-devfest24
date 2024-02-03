@@ -9,7 +9,7 @@ import bcrypt from "bcryptjs";
 import { RegisterSchema, formSchema } from "@/schemas";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { updateProfileSchema } from "@/schemas";
+import {updateProfileSchema} from '@/schemas'
 
 Comment 
 Like
