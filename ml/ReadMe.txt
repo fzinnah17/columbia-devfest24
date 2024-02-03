@@ -1,0 +1,5 @@
+- The opnion data scraping folder contains files that scrape headlines from different websites that are on different parts of the political spectrum. It then adds this data to a couple of files, datafile.csv and labels.csv, which consists of all the data used to train the PoliBERT model.
+- An additional dataset is also used to train the model, from the site: https://www.kaggle.com/datasets/yoandinkov/youtubepoliticalbias/data. This contains a set of youtube channels that are also on different parts of the political spectrum.
+- The way the model is trained is that the text from the datafile.csv file has certain labels attached to each bit of text (labels can be found in the labels.csv file) and the model is then trained to recognize which statements tend to lean to a certain politcal alignment. Through this, data from our site is then fed to model, which then tries to identify the poltical alignment of something stated on our site.
+
+- The newly trained model is not paticularly accurate as of yet, having a peak accurcay of 69%. This can be improved with more data, as it currently uses around 730 lines from a variety of sources to try and evaluate statements.
