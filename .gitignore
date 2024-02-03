@@ -1,5 +1,17 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+#model configuration
+ml/path_to_save_model
+
+#datasets that are too large
+ml/very large datasets
+
+
+#ml testing files
+oldfiles (ignore)
+archive (unused)/
+
+
 # dependencies
 /node_modules
 /.pnp
