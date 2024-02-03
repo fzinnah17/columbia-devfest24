@@ -23,6 +23,7 @@ export default function FeedList({
     setMorePostsLoading(true);
     const startId = parsedPosts[parsedPosts.length - 1]._id;
     let res;
+    let userId;
     switch (feedType) {
       case "all":
         res = await getAllPosts(startId);
@@ -31,11 +32,12 @@ export default function FeedList({
         res = await getUserPosts(session.user.userId, startId);
         break;
       case "user":
-        // const userId = parsedPosts[0].user._id;
+        userId = parsedPosts[0].user._id;
         // res = await getHomePosts(userId, startId);
+        res = await getUserPosts(userId, startId);
         break;
       case "home":
-        const userId = parsedPosts[0].user._id;
+        userId = parsedPosts[0].user._id;
         res = await getHomePosts(userId, startId);
         break;
     }

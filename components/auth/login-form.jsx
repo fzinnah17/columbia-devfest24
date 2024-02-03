@@ -29,7 +29,7 @@ export const LoginForm = () => {
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof LoginSchema>>({
+  const form = useForm({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
       username: "",
