@@ -24,8 +24,8 @@ import { FormSuccess } from "../form-success";
 export const LoginForm = () => {
   const router = useRouter();
 
-  const [error, setError] = useState<string | undefined>("");
-  const [success, setSuccess] = useState<string | undefined>("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [isPending, startTransition] = useTransition();
 
   const form = useForm({

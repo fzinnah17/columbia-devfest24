@@ -25,9 +25,9 @@ export default async function RootLayout({
           <body className="font-primary flex flex-col h-screen justify-between items-center">
             <NavBar atLogin={true} />
             {children}
+            <Footer />
           </body>
       </Provider>
-      <Footer />
     </html>
   );
 }

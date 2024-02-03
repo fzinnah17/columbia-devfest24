@@ -23,9 +23,9 @@ export default async function RootLayout({
           <body className="font-primary flex flex-col h-screen justify-between items-center">
             <NavBar profilePicUrl={profileUrl} />
             {children}
+            <Footer />
           </body>
       </Provider>
-      <Footer />
     </html>
   );
 }
