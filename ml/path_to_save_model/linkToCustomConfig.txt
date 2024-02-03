@@ -1,0 +1,3 @@
+Here's the link to the files that house the fine-tuned configuration of the model: https://www.kaggle.com/datasets/yoandinkov/youtubepoliticalbias/data
+
+Download and place the files in this folder

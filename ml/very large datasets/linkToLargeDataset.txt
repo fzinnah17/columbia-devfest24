@@ -1,0 +1,5 @@
+Here's the link to the full set of training data: https://www.kaggle.com/datasets/yoandinkov/youtubepoliticalbias/data
+
+Once downloading the set from here, just place the dataset.json file in the place of this file
+
+Use the jsonDataSetReader file to collect the data from the file
