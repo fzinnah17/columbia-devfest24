@@ -1,0 +1,29 @@
+.container-fluid {
+  text-align: center;
+}
+
+.iconItem {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px; /* Adjust the space between icons */
+    margin-bottom: 1rem;
+}
+
+.logo {
+  width: 30px;
+  height: 30px;
+}
+
+.text-secondary {
+  color: #6c757d; /* Default text color, adjust as needed */
+}
+
+.text-black {
+  color: black; /* Text color for light mode */
+}
+
+.footer-bottom-text {
+  margin-top: 1rem;
+  color: inherit; /* Inherits the color based on the theme */
+}
