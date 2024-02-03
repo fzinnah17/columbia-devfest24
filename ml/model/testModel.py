@@ -5,7 +5,10 @@ import torch
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Replace 'path_to_your_fine_tuned_model' with the actual path to your fine-tuned model
-fine_tuned_model_path = "path_to_save_model"
+
+
+# CHANGE THIS WHEN NEEDED
+fine_tuned_model_path = "ml/path_to_save_model (too big)"
 
 
 # select mode path here

@@ -4,7 +4,8 @@
 import json
 import csv
 # Opening JSON file
-f = open('dataset.json')
+# CHANGE THIS WHEN NEEDED
+f = open('ml/very large datasets (too big)/dataset.json')
 
 # returns JSON object as
 # a dictionary
