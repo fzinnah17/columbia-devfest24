@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import NavBar from "@/components/NavBar";
+import Footer from "@/components/Footer";
 
 
 export const metadata = {
@@ -24,9 +25,9 @@ export default async function RootLayout({
           <body className="font-primary flex flex-col h-screen justify-between items-center">
             <NavBar atLogin={true} />
             {children}
-            <div>footer placeholder</div>
           </body>
       </Provider>
+      <Footer />
     </html>
   );
 }
