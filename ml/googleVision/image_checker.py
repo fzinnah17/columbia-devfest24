@@ -2,6 +2,8 @@
 from google.cloud import storage
 import os
 import glob
+import queue
+from queue_processor import NameQueue
 
 directory_path = "ml/googleVision/sample images"
 jpg_files = glob.glob(os.path.join(directory_path, '*.jpg'))
@@ -12,6 +14,7 @@ for jpg_file in jpg_files:
     pictures.append(os.path.basename(jpg_file))
 
 print(pictures)
+name_queue = NameQueue()
 
 for name in pictures:
     # name = 'file_i_want_to_check.txt'
@@ -27,5 +30,7 @@ for name in pictures:
                 "gsutil cp ml/googleVision/sample\ images/{} gs://devfest-image-bucket-v1".format(name))
 
             print("Success!")
+            name_queue.add_name(name)
+            # export names to a queue
         except:
             print("An error occured while uploading an image :(")

@@ -10,6 +10,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # Define paths
 pretrained_LM_path = "kornosk/polibertweet-mlm"
 save_path = "ml/path_to_save_model (too big)"  # cHANGE THIS WHEN NEEDED
+# Remove (too big) when needed
 
 # Load tokenizer and model
 tokenizer = AutoTokenizer.from_pretrained(pretrained_LM_path)
