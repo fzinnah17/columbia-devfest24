@@ -13,18 +13,21 @@ import time
 duration = 100
 end_time = time.time() + duration
 
-while time.time() < end_time:  # while loop executes for 5 seconds
+# while time.time() < end_time:  # while loop executes for 5 seconds
+counter = 0
+while counter < 1:
     try:
         # os.system("python image_checker")
         # os.system("python vision.py")
-        name_queue.process_names()
+        labelling = name_queue.process_names()
+        print(labelling)
 
     except FileNotFoundError:
         print("Error in finding files")
-    time.sleep(1)
+    counter += 1
 
     # Continue with the rest of your code after the loop
-    print("Execution completed.")
+    # print("Execution completed.")
 
 
 # def process_uploaded_images():

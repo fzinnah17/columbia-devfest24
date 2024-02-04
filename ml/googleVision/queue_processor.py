@@ -24,7 +24,7 @@ class NameQueue:
 
             combined_descriptions = ', '.join(descriptions)
 
-            print(combined_descriptions)  # sync this with the image
+            return combined_descriptions  # sync this with the image THIS MIGHT CAUSE PROBLEMS
 
 
 # Example of processing names from the queue

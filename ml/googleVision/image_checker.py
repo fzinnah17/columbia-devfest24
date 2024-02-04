@@ -13,7 +13,7 @@ pictures = []
 for jpg_file in jpg_files:
     pictures.append(os.path.basename(jpg_file))
 
-print(pictures)
+# print(pictures)
 name_queue = NameQueue()
 
 for name in pictures:
@@ -22,14 +22,14 @@ for name in pictures:
     bucket_name = 'devfest-image-bucket-v1'
     bucket = storage_client.bucket(bucket_name)
     stats = storage.Blob(bucket=bucket, name=name).exists(storage_client)
-    print(stats)
+    # print(stats)
     if stats == False:
         # upload image to the google cloud bucket
         try:
             os.system(
                 "gsutil cp ml/googleVision/sample\ images/{} gs://devfest-image-bucket-v1".format(name))
 
-            print("Success!")
+            # print("Success!")
             name_queue.add_name(name)
             # export names to a queue
         except:
