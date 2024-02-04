@@ -6,9 +6,10 @@ import { useState, useEffect } from "react";
 import { useWindowScroll } from "react-use";
 import { useRouter, usePathname } from "next/navigation";
 import ProfileDropdown from "./profile-dropdown";
-import { HomeIcon, Users, SearchIcon, User } from "lucide-react";
+import { HomeIcon, Users, User } from "lucide-react";
 import Image from "next/image";
 import Slider from "./SliderDemo";
+import SearchButton from './SearchButton'
 
 
 export default function NavBar({atLogin, profilePicUrl}) {
@@ -60,7 +61,7 @@ export default function NavBar({atLogin, profilePicUrl}) {
               </div>
             </div>
             <div className="flex gap-8 items-center">
-              <SearchIcon />
+              <SearchButton />
               <ProfileDropdown profilePicUrl={profilePicUrl} />
               <div><ModeToggle /></div>
             </div>

@@ -15,7 +15,6 @@ export default function ProfileSection({ edit, stringData }) {
   const [userData, getUserData] = useState({});
   const [isFollowing, setIsFollowing] = useState(null);
   const [followsYou, setFollowsYou] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
 
@@ -25,17 +24,13 @@ export default function ProfileSection({ edit, stringData }) {
     }
       setIsFollowing(userData.followers?.some(
         (obj) => obj._id.toString() === session?.user.userId));
-        console.log(userData)
-        console.log(userData.following?.some(obj => obj._id.toString() === session?.user.userId));
     setFollowsYou(userData.following?.some(obj => obj._id.toString() === session?.user.userId));
   }, [stringData, userData, session]);
 
 
   async function changeIsFollowing(bool) {
     try {
-      setIsLoading(true);
       await changeFollowings(userData._id, bool);
-      setIsLoading(false);
       if (bool) {
         // user is now following this profile
         setIsFollowing(true);

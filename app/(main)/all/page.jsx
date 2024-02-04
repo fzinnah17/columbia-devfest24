@@ -9,7 +9,7 @@ export default async function Page() {
   const user = await getUser(sessionData.userId);
   const posts = await getAllPosts();
   const parsedPosts = JSON.parse(posts)
-  
+  // console.log(parsedPosts)  
   return (
     <>
       <HomeFeed

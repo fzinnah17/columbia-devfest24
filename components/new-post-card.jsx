@@ -2,11 +2,11 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import * as z from "zod";
 import { createNewPost } from "@/actions/actions";
 import { useRouter } from "next/navigation";
 import { FileUpload } from "./file-upload";
 import { FormSuccess } from "./form-success";
+import { useRef } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -23,11 +23,11 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogClose,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose
 } from "@/components/ui/dialog";
 import { useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
@@ -36,6 +36,7 @@ import { formSchema } from "@/schemas";
 
 const NewPostCard = ({ user }) => {
     const router = useRouter();
+    const ref = useRef();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const form = useForm({
@@ -51,6 +52,7 @@ const NewPostCard = ({ user }) => {
     await createNewPost(values);
     router.refresh();
     setSuccess(true);
+    ref.current.click();  // need to manually close dialog after submit
   };
 
   return (
@@ -126,6 +128,9 @@ const NewPostCard = ({ user }) => {
                             Post
                         </Button>
                 </div>
+                <DialogClose asChild>
+                  <span ref={ref}></span>
+              </DialogClose>
               </DialogFooter>
             </form>
           </Form>
