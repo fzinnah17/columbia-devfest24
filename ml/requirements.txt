@@ -1,6 +1,6 @@
-- Install the latest version of python, if necessary (this program uses Python 3.11.3
+- Install Python 3.11.3 (if you don't already have it)
 
-- In order to run the python files, make sure to have all the list modules installed:
+- In order to run the python files, make sure to have all the listed modules installed:
 
 
 pip install vision
@@ -10,6 +10,33 @@ pip install sklearn
 pip install runModel
 pip install requests
 
-- To get this program to fully work, you'll need Google Cloud
+
+- To get the ml model working:
+1. Go to the file ml/path_to_save_model/linkToCustomConfig.txt and follow the instructions there
+2. Go to this file: post_processing/runModel.py
+3. Go to line 13 and replace fine_tuned_model_path = "ml/path_to_save_model (too big)" with fine_tuned_model_path = "ml/path_to_save_model"
+
+- To get this program to fully work, you'll need Google Cloud (for mac only, if you need help with windows, pls leave a comment)
+1. Search up Google Cloud and sign up for a new account (you should get $300 credit)
+2. Once setting up a new account, make a new project
+3. Search of Vision AI and add the API to your project
+3. Once you do that, honestly, follow the tutorial on there (there are a ton of different parts, like installing google cloud, testing out with demo images, etc. that make it just a bit too long to put here (and I am also writing this at 4:34 am 🫠)).
+
+- If you would like to re-train the model:
+1. Go to this file: ml/modelTraining/training.py
+2. Go to line 12 and change save_path = "ml/path_to_save_model (too big)" 12 to save_path = "ml/path_to_save_model"
+3. Go to this file: ml/very large datasets/linkToLargeDataset.txt
+4. Follow the instructions there.
+
+- For more info on training your own models and making your own datasets, I suggest you go to these websites (I used these and they were quite helpful)
+1. https://huggingface.co/kornosk/polibertweet-political-twitter-roberta-mlm (our model is taken from here)
+2. https://huggingface.co/blog/sentiment-analysis-twitter (how I kind of figured out how to use the model to do other things)
+3. https://www.kaggle.com (where to get some pre-made datasets from)
+
+
+- Author: vangarde03 :)
+
+
+
 
 

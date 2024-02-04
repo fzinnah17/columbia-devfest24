@@ -259,7 +259,10 @@ export async function createNewPost(values) {
       // Parse the JSON output from the Python script
       const processedJson = JSON.parse(stdout);
 
-      // console.log(processedJson);
+
+      console.log("---------");
+      console.log(processedJson);
+      console.log("---------");
 
       return JSON.stringify(processedJson); //added
 
