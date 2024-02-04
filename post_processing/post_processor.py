@@ -5,6 +5,7 @@ from runModel import giveRating
 import requests
 import os
 import subprocess
+import sys
 
 
 def runPolitBertOnText(text):
@@ -61,7 +62,16 @@ def check_json_attributes(json_object):
     return json_object
 
     # print(json_object)
+if __name__ == "__main__":
+    # Read the JSON data from standard input
+    json_data = sys.stdin.read()
 
+    # Process the JSON data
+    processed_json = check_json_attributes(json_data)
+
+    if processed_json:
+        # Print the processed JSON to standard output
+        print(json.dumps(processed_json))
 
 # Example JSON object
 # example_json = {
