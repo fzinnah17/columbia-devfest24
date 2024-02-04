@@ -1,0 +1,15 @@
+- Install the latest version of python, if necessary (this program uses Python 3.11.3
+
+- In order to run the python files, make sure to have all the list modules installed:
+
+
+pip install vision
+pip install transformers
+pip install torch
+pip install sklearn
+pip install runModel
+pip install requests
+
+- To get this program to fully work, you'll need Google Cloud
+
+

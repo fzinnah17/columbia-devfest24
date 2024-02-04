@@ -240,13 +240,16 @@ export async function createNewPost(values) {
           },
         });
 
-      const postsJson = JSON.stringify(populatedPost); //added
 
+
+      const postsJson = JSON.stringify(populatedPost); //added
 
       // Calls Python script with the generated JSON
       // await execAsync(`python post_processing/post_processor.py '${postsJson}'`); //added commented out
+      // console.log(postsJson);
 
       const { stdout, stderr } = await execAsync(`echo '${postsJson}' | python post_processing/post_processor.py`); //added
+
 
       if (stderr) {
         console.error(`Error executing Python script: ${stderr}`);
@@ -256,7 +259,7 @@ export async function createNewPost(values) {
       // Parse the JSON output from the Python script
       const processedJson = JSON.parse(stdout);
 
-      console.log(processedJson);
+      // console.log(processedJson);
 
       return JSON.stringify(processedJson); //added
 

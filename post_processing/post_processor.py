@@ -62,6 +62,7 @@ def check_json_attributes(json_str):
 
     return json_object
 
+
     # print(json_object)
 if __name__ == "__main__":
     # Read the JSON data from standard input
