@@ -15,15 +15,15 @@ Comment
 Like
 
 export async function getSlider() {
+  await connectToDB();
   const session = await getServerSession(authOptions);
   const user = await User.findById(session.user.userId);
   const slider = user.slider;
-  console.log("SLIDER IS ", slider);
   return slider;
 }
 
 export async function updateSlider(newSlider) {
-  console.log(newSlider, typeof newSlider);
+  await connectToDB();
   try {
     const session = await getServerSession(authOptions);
     const userId = session?.user.userId;
@@ -91,6 +91,7 @@ export async function getProfileUrl(userId) {
 export async function getHomePosts(userId, startId) {
   await connectToDB();
   const currentUser = await User.findById(userId);
+  const slider = await getSlider();
   // all your posts and your followings' posts
   const usersIds = [currentUser._id, ...currentUser.following];
   try {
@@ -98,7 +99,6 @@ export async function getHomePosts(userId, startId) {
       const posts = await Post.find({ user: { $in: usersIds } })
         .sort({ _id: -1 })
         .populate("user")
-        .limit(10)      // remove this when ml api ready
         .populate({
           path: "likes",
           populate: {
@@ -111,9 +111,30 @@ export async function getHomePosts(userId, startId) {
             path: "user",
           },
         });
-      // input posts in ML api. It will return all home feed posts that align with your 
-      // slider. If there are 11 posts, nextCursor is 10th post's id, else dont return cursor
-      return JSON.stringify(posts);
+      
+
+        // Determine thresholds or acceptance criteria based on the slider value
+        let acceptableRange;
+        if (slider < 20) {   // Seeking very liberal content
+            acceptableRange = [0, 1];
+        } else if (slider < 40) { // Seeking liberal content
+            acceptableRange = [0, 2];
+        } else if (slider < 60) { // Seeking neutral content
+            acceptableRange = [1, 3];
+        } else if (slider < 80) { // Seeking conservative content
+            acceptableRange = [2, 4];
+        } else {             // Seeking very conservative content
+            acceptableRange = [3, 4];
+        }
+
+        // Filter the array based on the threshold, preserving the original order
+        const filteredArray = posts.filter(obj => 
+            obj.rating >= acceptableRange[0] && obj.rating <= acceptableRange[1]
+        );
+
+        // Take the first 10 items from the filtered array
+        const top10Filtered = filteredArray.slice(0, 10);
+      return JSON.stringify(top10Filtered);
     }
     else {
       // user clicked on 'show more'. Theres a cursor
@@ -134,9 +155,29 @@ export async function getHomePosts(userId, startId) {
             path: "user",
           },
         });
-      // input posts in ML api. It will return all home feed posts that were created after 
-      // the prev batch, all aligning with your slider 
-      return JSON.stringify(posts);
+      // Determine thresholds or acceptance criteria based on the slider value
+      let acceptableRange;
+      if (slider < 20) {   // Seeking very liberal content
+          acceptableRange = [0, 1];
+      } else if (slider < 40) { // Seeking liberal content
+          acceptableRange = [0, 2];
+      } else if (slider < 60) { // Seeking neutral content
+          acceptableRange = [1, 3];
+      } else if (slider < 80) { // Seeking conservative content
+          acceptableRange = [2, 4];
+      } else {             // Seeking very conservative content
+          acceptableRange = [3, 4];
+      }
+
+      // Filter the array based on the threshold, preserving the original order
+      const filteredArray = posts.filter(obj => 
+          obj.rating >= acceptableRange[0] && obj.rating <= acceptableRange[1]
+      );
+
+      // Take the first 10 items from the filtered array
+      const top10Filtered = filteredArray.slice(0, 10);
+
+    return JSON.stringify(top10Filtered);
     }
   } catch (err) {
     console.log(err);
@@ -148,6 +189,10 @@ export async function getHomePosts(userId, startId) {
 
 export async function getAllPosts(startId) {
   await connectToDB();
+  const slider = await getSlider();
+  console.log('IN GET ALL POSTS. SLIDER IS ', slider)
+
+
   if (startId) {
     try {
       const posts = await Post.find()
@@ -168,6 +213,7 @@ export async function getAllPosts(startId) {
           },
         });
 
+
       return JSON.stringify(posts);
 
 
@@ -178,7 +224,6 @@ export async function getAllPosts(startId) {
     try {
       const posts = await Post.find()
         .sort({ _id: -1 })
-        .limit(10)      // remove 
         .populate("user")
         .populate({
           path: "likes",
@@ -193,8 +238,32 @@ export async function getAllPosts(startId) {
           },
         });
 
-      return JSON.stringify(posts); //commented out
+        // posts is a giant array of posts objects that each has a rating
 
+        // Determine thresholds or acceptance criteria based on the slider value
+        let acceptableRange;
+        if (slider < 20) {   // Seeking very liberal content
+            acceptableRange = [0, 1];
+        } else if (slider < 40) { // Seeking liberal content
+            acceptableRange = [0, 2];
+        } else if (slider < 60) { // Seeking neutral content
+            acceptableRange = [1, 3];
+        } else if (slider < 80) { // Seeking conservative content
+            acceptableRange = [2, 4];
+        } else {             // Seeking very conservative content
+            acceptableRange = [3, 4];
+        }
+
+        // Filter the array based on the threshold, preserving the original order
+        const filteredArray = posts.filter(obj => 
+            obj.rating >= acceptableRange[0] && obj.rating <= acceptableRange[1]
+        );
+
+        // Take the first 10 items from the filtered array
+        const top10Filtered = filteredArray.slice(0, 10);
+
+      return JSON.stringify(top10Filtered);
+        
 
     } catch (err) {
       throw new Error(err);
@@ -293,13 +362,13 @@ export async function createNewPost(values) {
 
 export async function getUserPosts(userId, startId) {
   await connectToDB();
+  const slider = await getSlider();
   const currentUser = await User.findById(userId);
   try {
     if (!startId) {
       const posts = await Post.find({ user: currentUser._id })
         .sort({ _id: -1 })
         .populate("user")
-        .limit(10)      // remove this when ml api ready
         .populate({
           path: "likes",
           populate: {
@@ -312,9 +381,29 @@ export async function getUserPosts(userId, startId) {
             path: "user",
           },
         });
-      // input posts in ML api. It will return all user posts that align with your 
-      // slider. 
-      return JSON.stringify(posts);
+      // Determine thresholds or acceptance criteria based on the slider value
+      let acceptableRange;
+      if (slider < 20) {   // Seeking very liberal content
+          acceptableRange = [0, 1];
+      } else if (slider < 40) { // Seeking liberal content
+          acceptableRange = [0, 2];
+      } else if (slider < 60) { // Seeking neutral content
+          acceptableRange = [1, 3];
+      } else if (slider < 80) { // Seeking conservative content
+          acceptableRange = [2, 4];
+      } else {             // Seeking very conservative content
+          acceptableRange = [3, 4];
+      }
+
+      // Filter the array based on the threshold, preserving the original order
+      const filteredArray = posts.filter(obj => 
+          obj.rating >= acceptableRange[0] && obj.rating <= acceptableRange[1]
+      );
+
+      // Take the first 10 items from the filtered array
+      const top10Filtered = filteredArray.slice(0, 10);
+
+    return JSON.stringify(top10Filtered);
     }
     else {
       // user clicked on 'show more'. Theres a cursor
@@ -335,10 +424,29 @@ export async function getUserPosts(userId, startId) {
             path: "user",
           },
         });
-      // input posts in ML api. It will return all home feed posts that were created after 
-      // the prev batch, all aligning with your slider. If there are 11 posts, nextCursor 
-      // is 10th post's id, else dont return cursor
-      return JSON.stringify(posts);
+      // Determine thresholds or acceptance criteria based on the slider value
+      let acceptableRange;
+      if (slider < 20) {   // Seeking very liberal content
+          acceptableRange = [0, 1];
+      } else if (slider < 40) { // Seeking liberal content
+          acceptableRange = [0, 2];
+      } else if (slider < 60) { // Seeking neutral content
+          acceptableRange = [1, 3];
+      } else if (slider < 80) { // Seeking conservative content
+          acceptableRange = [2, 4];
+      } else {             // Seeking very conservative content
+          acceptableRange = [3, 4];
+      }
+
+      // Filter the array based on the threshold, preserving the original order
+      const filteredArray = posts.filter(obj => 
+          obj.rating >= acceptableRange[0] && obj.rating <= acceptableRange[1]
+      );
+
+      // Take the first 10 items from the filtered array
+      const top10Filtered = filteredArray.slice(0, 10);
+
+    return JSON.stringify(top10Filtered);
     }
   } catch (err) {
     console.log(err);

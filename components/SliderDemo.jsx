@@ -3,13 +3,17 @@ import { Slider } from "@/components/ui/slider"
 import { useState, useEffect } from "react";
 import { updateSlider, getSlider } from "@/actions/actions";
 import { FaSpinner } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 export default function SliderDemo({ className, ...props }) {
+  const router = useRouter();
   const [alignment, setAlignment] = useState(50);
   const [isDefault, setIsDefault] = useState(true);
+
   async function handleChange(value) {
     await updateSlider(value[0]);
     setAlignment(value);
+    router.refresh();
   }
   useEffect(() => {
     async function getSliderValue() {
