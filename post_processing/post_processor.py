@@ -58,51 +58,53 @@ def check_json_attributes(json_object):
     else:
         print("Post contains no contents")
 
-    print(json_object)
+    return json_object
+
+    # print(json_object)
 
 
 # Example JSON object
-example_json = {
-    "_id": "65bf0bf67ee9301da6538fe1",
-    "content": "test",
-    "image": "",
-    "user": {
-        "_id": "65bf08f8725afb2ce0b28b27",
-        "name": "assadtest",
-        "username": "test",
-        "password": "$2a$10$m6wPBGWM9wWzOKHdeRB9NeUZaInj8LGByFr4SnQ0IRdVTmbzXYS9S",
-        "profilePicUrl": "https://utfs.io/f/316b3533-39b9-4bdd-a268-4a162e812c30-1jqe77.jpg",
-        "following": [],
-        "followers": [],
-        "posts": ["Array"],
-        "v": 1
-    },
-    "likes": [],
-    "comments": [],
-    "timestamp": "2024-02-04T04:00:54.676Z",
-    "v": 0
-}
+# example_json = {
+#     "_id": "65bf0bf67ee9301da6538fe1",
+#     "content": "test",
+#     "image": "",
+#     "user": {
+#         "_id": "65bf08f8725afb2ce0b28b27",
+#         "name": "assadtest",
+#         "username": "test",
+#         "password": "$2a$10$m6wPBGWM9wWzOKHdeRB9NeUZaInj8LGByFr4SnQ0IRdVTmbzXYS9S",
+#         "profilePicUrl": "https://utfs.io/f/316b3533-39b9-4bdd-a268-4a162e812c30-1jqe77.jpg",
+#         "following": [],
+#         "followers": [],
+#         "posts": ["Array"],
+#         "v": 1
+#     },
+#     "likes": [],
+#     "comments": [],
+#     "timestamp": "2024-02-04T04:00:54.676Z",
+#     "v": 0
+# }
 
-example_json_without_rating = {
-    "_id": "65bf17c17ee9301da653919c",
-    "content": "I love the sky",
-    "image": "https://utfs.io/f/d1498195-e93b-4697-b81f-1eed5d63af7e-1jqe77.jpg",
-    "user": {
-        "_id": "65bf08f8725afb2ce0b28b27",
-        "name": "assadtest",
-        "username": "test",
-        "password": "$2a$10$m6wPBGWM9wWzOKHdeRB9NeUZaInj8LGByFr4SnQ0IRdVTmbzXYS9S",
-        "profilePicUrl": "https://utfs.io/f/316b3533-39b9-4bdd-a268-4a162e812c30-1jqe77.jpg",
-        "following": [],
-        "followers": ["Array"],
-        "posts": ["Array"],
-        "v": 8
-    },
-    "likes": [],
-    "comments": [],
-    "timestamp": "2024-02-04T04:51:13.858Z",
-    "v": 0
-}
+# example_json_without_rating = {
+#     "_id": "65bf17c17ee9301da653919c",
+#     "content": "I love the sky",
+#     "image": "https://utfs.io/f/d1498195-e93b-4697-b81f-1eed5d63af7e-1jqe77.jpg",
+#     "user": {
+#         "_id": "65bf08f8725afb2ce0b28b27",
+#         "name": "assadtest",
+#         "username": "test",
+#         "password": "$2a$10$m6wPBGWM9wWzOKHdeRB9NeUZaInj8LGByFr4SnQ0IRdVTmbzXYS9S",
+#         "profilePicUrl": "https://utfs.io/f/316b3533-39b9-4bdd-a268-4a162e812c30-1jqe77.jpg",
+#         "following": [],
+#         "followers": ["Array"],
+#         "posts": ["Array"],
+#         "v": 8
+#     },
+#     "likes": [],
+#     "comments": [],
+#     "timestamp": "2024-02-04T04:51:13.858Z",
+#     "v": 0
+# }
 
-# Call the function with the example JSON object
-check_json_attributes(example_json_without_rating)
+# # Call the function with the example JSON object
+# check_json_attributes(example_json_without_rating)
