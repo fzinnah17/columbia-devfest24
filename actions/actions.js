@@ -202,6 +202,21 @@ export async function createNewPost(values) {
   const validatedFields = formSchema.safeParse(values);
   if (validatedFields.success) {
     const { content, image } = validatedFields.data;
+
+    // get the rating from ML using content and/or image
+    const postsJson = JSON.stringify({ content: content, image: image })
+    const { stdout, stderr } = await execAsync(`echo '${postsJson}' | python3 post_processing/post_processor.py`);//added
+
+    if (stderr) {
+      console.error("Error executing Python script: ${ stderr }");
+      return JSON.stringify([]);
+    }
+
+    // Parse the JSON output from the Python script
+    const processedJson = JSON.parse(stdout);
+    // extract the rating
+    const rating = Number(processedJson.rating);
+    // create new post instance
     try {
       await connectToDB();
       // Create a new post instance
@@ -209,16 +224,13 @@ export async function createNewPost(values) {
         content,
         user: session.user.userId,
         image,
+        rating: { type: Number, required: true },
       });
+
+
+
       const currentUser = await User.findById(session?.user.userId);
 
-      // const comment = new Comment({
-      //   content: 'dasd',
-      //   user: userId,
-      //   post: newPost._id
-      // })
-      // await comment.save();
-      // Save the post to the database
       const savedPost = await newPost.save();
 
       currentUser.posts.push(savedPost);
@@ -241,33 +253,9 @@ export async function createNewPost(values) {
         });
 
 
-
-      const postsJson = JSON.stringify(populatedPost); //added
-
-      // Calls Python script with the generated JSON
-      // await execAsync(`python post_processing/post_processor.py '${postsJson}'`); //added commented out
-      // console.log(postsJson);
-
-      const { stdout, stderr } = await execAsync(`echo '${postsJson}' | python post_processing/post_processor.py`); //added
+      return JSON.stringify(populatedPost); //commented out
 
 
-      if (stderr) {
-        console.error(`Error executing Python script: ${stderr}`);
-        return JSON.stringify([]);
-      }
-
-      // Parse the JSON output from the Python script
-      const processedJson = JSON.parse(stdout);
-
-
-      console.log("---------");
-      console.log(processedJson);
-      console.log("---------");
-
-      return JSON.stringify(processedJson); //added
-
-
-      // return JSON.stringify(populatedPost); //commented out
     } catch (error) {
       // Handle potential errors
       console.error('Error creating a new post:', error);

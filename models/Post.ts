@@ -7,6 +7,7 @@ const PostSchema = new Schema({
   timestamp: { type: Date, default: Date.now },
   likes: [{ type: Schema.Types.ObjectId, ref: "Like" }],
   comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
+  rating: { type: Number },
 });
 
 const Post = models.Post || model("Post", PostSchema);
