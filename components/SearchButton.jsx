@@ -43,7 +43,7 @@ export default function SearchButton() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Search className="h-8 w-8 cursor-pointer stroke-white" />
+      <Search className="h-8 w-8 cursor-pointer" />
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

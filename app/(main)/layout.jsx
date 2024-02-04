@@ -22,7 +22,7 @@ export default async function RootLayout({
     <html lang="en">
       <Provider>
           <body className="font-primary flex flex-col h-screen justify-between items-center">
-            <div className="bg-inherit">
+            <div className="bg-inherit w-full">
               <NavBar profilePicUrl={profileUrl} />
               {children}
             </div>

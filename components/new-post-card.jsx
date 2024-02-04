@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { createNewPost } from "@/actions/actions";
 import { useRouter } from "next/navigation";
 import { FileUpload } from "./file-upload";
-import { FormSuccess } from "./form-success";
 import { useRef } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -38,7 +37,6 @@ const NewPostCard = ({ user }) => {
     const router = useRouter();
     const ref = useRef();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [success, setSuccess] = useState(false);
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -51,7 +49,6 @@ const NewPostCard = ({ user }) => {
     setIsSubmitting(true);
     await createNewPost(values);
     router.refresh();
-    setSuccess(true);
     ref.current.click();  // need to manually close dialog after submit
   };
 
@@ -118,7 +115,6 @@ const NewPostCard = ({ user }) => {
                   )}
                 />
               <DialogFooter>
-                {success && <FormSuccess message="Success" />}
                 <div className="flex items-center space-x-4">
                         <Button
                             disabled={isSubmitting}

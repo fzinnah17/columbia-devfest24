@@ -14,6 +14,30 @@ import { updateProfileSchema } from '@/schemas'
 Comment
 Like
 
+export async function getSlider() {
+  const session = await getServerSession(authOptions);
+  const user = await User.findById(session.user.userId);
+  const slider = user.slider;
+  console.log("SLIDER IS ", slider);
+  return slider;
+}
+
+export async function updateSlider(newSlider) {
+  console.log(newSlider, typeof newSlider);
+  try {
+    const session = await getServerSession(authOptions);
+    const userId = session?.user.userId;
+    console.log(userId)
+    const user = await User.findByIdAndUpdate(userId, {
+      slider: newSlider,
+    });
+    console.log('USER IS ', user);
+  }
+  catch(err) {
+    throw new Error(err);
+  }
+}
+
 export async function createUser(userDetails) {
   // Destructure the userDetails to extract the required fields
   const validatedFields = RegisterSchema.safeParse(userDetails);
