@@ -10,11 +10,11 @@ import { HomeIcon, Users, User } from "lucide-react";
 import Image from "next/image";
 import Slider from "./SliderDemo";
 import SearchButton from './SearchButton'
+import Menu from './navbar-menu'
 
 
 export default function NavBar({atLogin, profilePicUrl}) {
   const [activeNavLink, setActiveNavLink] = useState("");
-  const router = useRouter();   // for search functionality
   const pathname = usePathname();   // to determine which icon should be highlighted
   const { y: pageYOffset } = useWindowScroll();   // to determine if navbar is sticky
   const [scrolled, setScrolled] = useState(false);
@@ -50,20 +50,23 @@ export default function NavBar({atLogin, profilePicUrl}) {
         scrolled
           ? "shadow-md border-b border-gray-200 dark:border-gray-600"
           : null}`}>
-            <div className="flex gap-2 lg:gap-8 items-center">
+            <div className="flex gap-3 lg:gap-8 items-center">
               {/* implement highlight if have time */}
-              <Image alt="logo" width={35} height={35} src={'/logo.png'} style={{objectFit: "contain"}}  />
-              <div className="ml-2 flex md:gap-4 lg:gap-8 items-center min-w-[400px] lg:w-[44rem] md:w-[40rem]">
+              <Image alt="logo" className="hidden lg:block" width={35} height={35} src={'/logo.png'} style={{objectFit: "contain"}}  />
+              <div className="ml-2 flex gap-3 sm:gap-4 lg:gap-8 items-center min-w-[300px] w-[60vw] lg:w-[35rem] md:w-[30rem]">
                 <Link href='/all' className='cursor-pointer'><HomeIcon /></Link>
                 {/* change to dropdown menu */}
                 <Link href='/home' className='cursor-pointer'><Users /></Link>
                 <Slider />
               </div>
             </div>
-            <div className="flex gap-2 md:gap-4 lg:gap-8 items-center">
+            <div className="hidden md:flex gap-2 md:gap-4 lg:gap-8 items-center">
               <SearchButton />
               <ProfileDropdown profilePicUrl={profilePicUrl} />
               <div><ModeToggle /></div>
+            </div>
+            <div className="md:hidden">
+              <Menu />
             </div>
           </div>
 
