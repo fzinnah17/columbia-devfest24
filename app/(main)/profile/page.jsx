@@ -13,7 +13,7 @@ const Page = async () => {
     <ProfileSection stringData={JSON.stringify(user)} edit={true} />
     <HomeFeed
       feedType={"profile"}
-      initialPosts={JSON.stringify(posts)}
+      initialPosts={posts}
       authuserData={JSON.stringify(user)}
     />
   </div>

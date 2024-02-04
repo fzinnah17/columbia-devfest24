@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { getProfileUrl } from "@/actions/actions";
 import Footer from "@/components/Footer"
+import { Toaster } from "@/components/ui/toaster";
 
 
 export const metadata = {
@@ -21,8 +22,11 @@ export default async function RootLayout({
     <html lang="en">
       <Provider>
           <body className="font-primary flex flex-col h-screen justify-between items-center">
-            <NavBar profilePicUrl={profileUrl} />
-            {children}
+            <div className="bg-inherit">
+              <NavBar profilePicUrl={profileUrl} />
+              {children}
+            </div>
+            <Toaster />
             <Footer />
           </body>
       </Provider>

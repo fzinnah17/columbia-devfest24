@@ -8,11 +8,12 @@ export default async function Home() {
   const sessionData = session?.user;
   const user = await getUser(sessionData.userId);
   const posts = await getHomePosts(sessionData.userId);
+  console.log(JSON.parse(posts))
   return (
     <>
       <HomeFeed
         feedType={"home"}
-        initialPosts={JSON.stringify(posts)}
+        initialPosts={posts}
         authuserData={JSON.stringify(user)}
       />
 

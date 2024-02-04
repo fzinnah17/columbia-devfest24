@@ -67,8 +67,8 @@ Like
  export async function getHomePosts(userId, startId) {
   await connectToDB();
     const currentUser = await User.findById(userId);
-    // all your posts and your friends' posts
-    const usersIds = [currentUser._id, ...currentUser.friends];
+    // all your posts and your followings' posts
+    const usersIds = [currentUser._id, ...currentUser.following];
     try {
       if (!startId) {
           const posts = await Post.find({ user: { $in: usersIds } })
@@ -128,7 +128,6 @@ export async function getAllPosts(startId) {
           .where("_id")
           .lt(startId)
           .sort({ _id: -1 })
-          .limit(10)        // remove when ml api ready
           .populate("user")
           .populate({
             path: "likes",
@@ -176,7 +175,7 @@ export async function getUser(userId) {
   await connectToDB();
     try {
       const user = await User.findById(userId).populate(
-        "friends friendRequestsSent friendRequestsReceived",
+        "followers following",
       );
       if (!user) {
         throw new Error("cant find user");
@@ -313,10 +312,45 @@ export async function getUserPosts(userId, startId) {
           });
         }
         // only name is updated
-        else {          
+        else if (!url) {          
           const user = await User.findByIdAndUpdate(userId, {name : name});
+        }
+        // only url
+        else {
+          const user = await User.findByIdAndUpdate(userId, {profilePicUrl : url});
+
         }
       } catch (err) {
         throw new Error(err);
       }
   }}
+
+  export async function changeFollowings(otherUserId, isFollowing) {
+    console.log(otherUserId, isFollowing)
+    try {
+      const session = await getServerSession(authOptions);
+      const userId = session.user.userId;
+      await connectToDB();
+      const sessionUser = await User.findById(userId);
+      const otherUser = await User.findById(otherUserId);
+      // user is now following otherUser
+      if (isFollowing) {
+        sessionUser.following.push(otherUser._id);
+        otherUser.followers.push(sessionUser._id);
+      } 
+      else {
+        // user is no longer following otherUser
+        sessionUser.following.splice(
+          sessionUser.following.indexOf(otherUser._id, 1),
+        );
+        otherUser.followers.splice(
+          otherUser.followers.indexOf(sessionUser._id, 1),
+        );
+        }
+      await sessionUser.save();
+      await otherUser.save();
+      }
+    catch (err) {
+      throw new Error(err);
+    }
+  }

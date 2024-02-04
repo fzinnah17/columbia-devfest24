@@ -48,7 +48,6 @@ export default function FeedList({
     setMorePostsLoading(false);
     setPosts(parsedPosts.concat(data));
   };
-
   if (postsLoading) {
     return null;
   }
@@ -59,12 +58,12 @@ export default function FeedList({
       user={authuserData}
     />
   ));
-  if (parsedPosts?.length > 0) {
+
     return (
-    <div className="flex flex-col gap-6 items-center py-10">
+    <div className="flex flex-col gap-6 items-center">
 
 
-        {feedType != "user" && <NewPostCard user={JSON.parse(authuserData)} />}
+        {feedType !== "user" && <NewPostCard user={JSON.parse(authuserData)} />}
         <div className="text-2xl max-w-2xl relative w-full">
         {feedType === "user"
           ? `${JSON.parse(authuserData).username}'s posts`
@@ -93,18 +92,4 @@ export default function FeedList({
         )}
       </div>
     );
-  } else {
-    return (
-      <div className={`row mx-auto mt-3 feed-card`}>
-        {feedType === "home" && (
-          <p className="">No posts from you or your friends yet...</p>
-        )}
-        {feedType === "user" && (
-          <p className="">No posts from this user yet...</p>
-        )}
-        {feedType === "profile" && <p className="">No posts from you yet...</p>}
-        {feedType === "all" && <p className="">No posts yet...</p>}
-      </div>
-    );
-  }
 }

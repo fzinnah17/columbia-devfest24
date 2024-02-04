@@ -22,11 +22,9 @@ import {
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Pencil } from "lucide-react";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { FileUpload } from "./file-upload";
 import { updateProfileSchema } from "@/schemas";
 import { updateProfile } from "@/actions/actions";
@@ -36,7 +34,6 @@ import { updateProfile } from "@/actions/actions";
 const EditProfile = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
-  const router = useRouter();
   const form = useForm({
     resolver: zodResolver(updateProfileSchema),
     defaultValues: {
@@ -47,22 +44,6 @@ const EditProfile = () => {
 
   const handleSubmit = async (values) => {
     setIsSubmitting(true);
-
-    // const res = await fetch("/api/profile", {
-    //   method: "PUT",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(values),
-    // });
-    // const data = await res.json();
-    // if (res.status === 201) {
-    //   router.refresh();
-    //   location.reload();
-    // } else {
-    //   console.log(data);
-    //   setError("A server error occurred.");
-    // }
     try {
         await updateProfile(values);
         location.reload();     // refresh profile page after updating
@@ -131,7 +112,7 @@ const EditProfile = () => {
                   <Button
                     disabled={
                       isSubmitting ||
-                      (!form.getValues().name.trim())
+                      (!form.getValues().name.trim() && !form.getValues().url.trim())
                     }
                     className="mt-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 dark:bg-blue-400 hover:bg-blue-700 dark:hover:bg-blue-500 focus:outline-none"
                     type="submit"

@@ -19,6 +19,7 @@ export default function HomeFeed({ feedType, initialPosts, authuserData }) {
           setPostsLoading(true);
           const parsedPosts = JSON.parse(initialPosts);
           if (parsedPosts.length < 10) {
+            
             setEndOfFeed(true);
           }
           setPosts(parsedPosts);

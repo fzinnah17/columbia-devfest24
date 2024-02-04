@@ -8,10 +8,9 @@ const UserSchema = new Schema({
     unique: [true, "Username already exists!"],
   },
   password: { type: String },
-  friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
   profilePicUrl: { type: String },
-  friendRequestsSent: [{ type: Schema.Types.ObjectId, ref: "User" }],
-  friendRequestsReceived: [{ type: Schema.Types.ObjectId, ref: "User" }],
+  following: [{ type: Schema.Types.ObjectId, ref: "User" }],
+  followers: [{ type: Schema.Types.ObjectId, ref: "User" }],
   posts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
 });
 

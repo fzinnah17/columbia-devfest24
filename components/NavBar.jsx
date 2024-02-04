@@ -12,7 +12,6 @@ import Slider from "./SliderDemo";
 
 
 export default function NavBar({atLogin, profilePicUrl}) {
-    // activeNavLink: 'home' || 'friends'
   const [activeNavLink, setActiveNavLink] = useState("");
   const router = useRouter();   // for search functionality
   const pathname = usePathname();   // to determine which icon should be highlighted
@@ -46,7 +45,7 @@ export default function NavBar({atLogin, profilePicUrl}) {
           enableSystem
           disableTransitionOnChange
       >
-          <div className={`self-end flex justify-between w-full items-center py-8 px-5 h-3 sticky top-0 z-50 transition-all duration-300 bg-inherit ${
+          <div className={`self-end flex justify-between w-full items-center mb-16 py-8 px-5 h-3 sticky top-0 z-50 transition-all duration-300 bg-inherit ${
         scrolled
           ? "shadow-md border-b border-gray-200 dark:border-gray-600"
           : null}`}>

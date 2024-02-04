@@ -6,109 +6,57 @@ import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import Image from "next/image";
 import { Loader } from "lucide-react";
+import { changeFollowings } from "@/actions/actions";
+import { useToast } from "./ui/use-toast";
+import { FormSuccess } from "./form-success";
 
 export default function ProfileSection({ edit, stringData }) {
   const { data: session, status } = useSession();
   const [userData, getUserData] = useState({});
-  const [friendRequestStatus, setFriendRequestStatus] = useState("none");
+  const [isFollowing, setIsFollowing] = useState(null);
+  const [followsYou, setFollowsYou] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const { toast } = useToast();
 
-  async function handleClick(accepted) {
-    setIsLoading(true);
-    let res;
-    if (accepted) {
-      res = await fetch(`/api/friend-requests/${userData._id}/accept`, {
-        method: "POST",
-      });
-      setFriendRequestStatus("friends");
-    } else {
-      res = await fetch(`/api/friend-requests/${userData._id}/decline`, {
-        method: "POST",
-      });
-    }
-    if (res.status === 200) {
-      location.reload();
-    } else {
-      setError(true);
-    }
-    setIsLoading(false);
-  }
 
   useEffect(() => {
     if (userData === undefined || Object.keys(userData).length === 0) {
       getUserData(JSON.parse(stringData));
     }
-    if (
-      userData.friendRequestsReceived?.some(
-        (obj) => obj._id.toString() === session?.user.userId,
-      )
-    ) {
-      setFriendRequestStatus("sent");
-    } else if (
-      userData.friends?.some(
-        (obj) => obj._id.toString() === session?.user.userId,
-      )
-    ) {
-      setFriendRequestStatus("friends");
-    }
-    // this user has sent you a FR
-    else if (
-      userData.friendRequestsSent?.some(
-        (obj) => obj._id.toString() === session?.user.userId,
-      )
-    ) {
-      setFriendRequestStatus("received");
-    }
+      setIsFollowing(userData.followers?.some(
+        (obj) => obj._id.toString() === session?.user.userId));
+        console.log(userData)
+        console.log(userData.following?.some(obj => obj._id.toString() === session?.user.userId));
+    setFollowsYou(userData.following?.some(obj => obj._id.toString() === session?.user.userId));
   }, [stringData, userData, session]);
 
-  async function handleUnfriendClick() {
-    setIsLoading(true);
-    const res = await fetch(`/api/users/${userData._id}/unfriend`, {
-      method: "DELETE",
-    });
-    if (res.status === 200) {
-      setFriendRequestStatus("none");
-      location.reload();
-    } else {
-      setError(true);
-    }
-    setIsLoading(false);
-  }
 
-  async function handleSendFriendRequest() {
-    const status = friendRequestStatus;
-    setIsLoading(true);
-    // send the request
-    if (status === "none" || status === "error") {
-      const res = await fetch(`/api/friend-requests`, {
-        method: "POST",
-        body: JSON.stringify({ friendId: userData._id }),
-      });
-      if (res.status === 200) {
-        setFriendRequestStatus("sent");
+  async function changeIsFollowing(bool) {
+    try {
+      setIsLoading(true);
+      await changeFollowings(userData._id, bool);
+      setIsLoading(false);
+      if (bool) {
+        // user is now following this profile
+        setIsFollowing(true);
       } else {
-        setFriendRequestStatus("error");
+        setIsFollowing(false);
       }
+
     }
-    // cancel request
-    else {
-      const res = await fetch(`/api/friend-requests/${userData._id}/cancel`, {
-        method: "DELETE",
-      });
-      if (res.status === 200) {
-        setFriendRequestStatus("none");
-      } else {
-        setFriendRequestStatus("error");
-      }
+    catch (err) {
+      toast({
+        variant: "destructive",
+        title: "Something went wrong",
+        description: err.message,
+      })
     }
-    setIsLoading(false);
   }
 
   if (status === 'loading') return <Loader className="m-auto animate-spin" />
 
   return (
-    <div className="flex justify-between items-center max-w-2xl w-full m-auto">
+    <div className="flex justify-between items-center max-w-2xl w-full m-auto my-6">
       <div className="flex gap-4">
         <div className="relative w-[100px] h-[100px]">
           <Image
@@ -127,57 +75,14 @@ export default function ProfileSection({ edit, stringData }) {
           <span>@{userData.username}</span>
         </div>
       </div>
-      <div className="self-center">
-        {!edit && friendRequestStatus !== "received" && (
-          <div className="col mt-auto">
-            {friendRequestStatus !== "friends" && (
-              <Button
-                type="button"
-                onClick={handleSendFriendRequest}
-              >
-                {friendRequestStatus === "sent" ? (
-                  "Pending"
-                ) : friendRequestStatus === "none" ||
-                  friendRequestStatus === "error" ? (
-                  "Send Friend Request"
-                ) : (
-                  <div>
-                    <div>loader icon</div>
-                  </div>
-                )}
-              </Button>
-            )}
-          </div>
-        )}
-        {friendRequestStatus === "received" && (
-          <>
-            <Button
-              variant={'destructive'}
-              onClick={() => handleClick(false)}
-            >
-              Decline
-            </Button>
-            <Button
-              variant={'default'}
-              onClick={() => handleClick(true)}
-            >
-              Accept
-            </Button>
-          </>
-      )}
-      {friendRequestStatus === "friends" && (
-          <Button onClick={() => handleUnfriendClick()}>
-            {/* make this an alert if have time */}
-            Unfriend
-            </Button>
-      )}
-      {friendRequestStatus === "error" && (
-        <div className="alert alert-danger px-3 py-2" role="alert">
-          Error. Please try again later.
-        </div>
-      )}
-        {edit && <EditProfile />}
+      <div className="self-center flex flex-col gap-2">
+        {edit ? <EditProfile /> : isFollowing ? (
+          <Button variant="destructive" className="self-end" onClick={() => changeIsFollowing(false)}>Unfollow</Button>
+        ) : <Button className="self-end" onClick={() => changeIsFollowing(true)}>Follow</Button>}
+        {followsYou && <FormSuccess message={`${userData.username} is following you`} />}
+
       </div>
+      
     </div>
   );
 }
