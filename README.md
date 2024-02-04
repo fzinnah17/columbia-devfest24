@@ -70,6 +70,13 @@ Our journey on this project was quite a learning experience, especially when it 
 - Adding likes, comments, and friends
 - Predicting a user's political stance based on their likes and following activity
 
+## Helpful Links
+Got to this link to take a look at Vision AI: https://cloud.google.com/vision?hl=en
+Go to this link to reach Google Cloud: https://cloud.google.com/?hl=en
+
+Here’s a how to guide for Google Cloud: https://cloud.google.com/docs/get-started
+Here’s a how to guide for Google Vision: https://cloud.google.com/vision/docs/how-to <- this is what we used to figure out how to use Google Vision (most useful link out of the four)
+
 ## Credits
 Shoutout to these guys for the pre-trained language model: https://github.com/GU-DataLab/PoliBERTweet
 - Main bonus: Pre-trained language model!
