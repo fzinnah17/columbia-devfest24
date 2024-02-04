@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth";
-import { authOptions } from "../../api/auth/[...nextauth]/route";
+import { authOptions } from "@/authOptions";
 import { getAllPosts, getUser } from "@/actions/actions";
 import HomeFeed from "@/components/homefeed";
 

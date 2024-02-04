@@ -1,6 +1,6 @@
 import HomeFeed from "@/components/homefeed";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/authOptions";
 import { getUserPosts, getUser } from "@/actions/actions";
 import ProfileSection from '@/components/profile-section';
 
