@@ -18,10 +18,13 @@ class NameQueue:
             # Do something with the name (e.g., print it)
 
             # Runs vision
-            print("Processing name:", name)
             labels = run_quickstart(name)
-            print(labels)
-            # this runs vision
+            # Extract top three descriptions
+            descriptions = [label.description for label in labels[:3]]
+
+            combined_descriptions = ', '.join(descriptions)
+
+            print(combined_descriptions)  # sync this with the image
 
 
 # Example of processing names from the queue

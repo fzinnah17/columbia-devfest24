@@ -1,5 +1,9 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+#pycache
+ml/googleVision/__pycache__
+post_processing/__pycache__
+
 #model configuration
 ml/path_to_save_model (too big)
 
