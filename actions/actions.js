@@ -224,7 +224,7 @@ export async function createNewPost(values) {
         content,
         user: session.user.userId,
         image,
-        rating: { type: Number, required: true },
+        rating: processedJson.rating,
       });
 
 
