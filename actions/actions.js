@@ -120,9 +120,6 @@ export async function getHomePosts(userId, startId) {
   }
 }
 
-const { exec } = require('child_process'); //added
-const util = require('util'); //added
-const execAsync = util.promisify(exec); //added
 
 
 export async function getAllPosts(startId) {
@@ -147,17 +144,7 @@ export async function getAllPosts(startId) {
           },
         });
 
-      // return JSON.stringify(posts); //commented out
-
-      const postsJson = JSON.stringify(posts); //added
-
-      // Calls Python script with the generated JSON
-      // await execAsync(`python post_processing/post_processor.py '${postsJson}'`); //added commented out
-
-      await execAsync(`echo '${postsJson}' | python post_processor.py`); //added
-
-
-      return JSON.stringify(postsJson); //added
+      return JSON.stringify(posts);
 
 
     } catch (err) {
@@ -181,18 +168,9 @@ export async function getAllPosts(startId) {
             path: "user",
           },
         });
-      // return JSON.stringify(posts); //commented out
 
+      return JSON.stringify(posts); //commented out
 
-      const postsJson = JSON.stringify(posts); //added
-
-      // Calls Python script with the generated JSON
-      // await execAsync(`python post_processing/post_processor.py '${postsJson}'`); //added commented out
-
-      await execAsync(`echo '${postsJson}' | python post_processor.py`); //added
-
-
-      return JSON.stringify(postsJson); //added
 
     } catch (err) {
       throw new Error(err);
@@ -215,6 +193,9 @@ export async function getUser(userId) {
   }
 }
 
+const { exec } = require('child_process'); //added
+const util = require('util'); //added
+const execAsync = util.promisify(exec); //added
 
 export async function createNewPost(values) {
   const session = await getServerSession(authOptions);
@@ -258,7 +239,29 @@ export async function createNewPost(values) {
             path: "user",
           },
         });
-      return JSON.stringify(populatedPost);
+
+      const postsJson = JSON.stringify(populatedPost); //added
+
+
+      // Calls Python script with the generated JSON
+      // await execAsync(`python post_processing/post_processor.py '${postsJson}'`); //added commented out
+
+      const { stdout, stderr } = await execAsync(`echo '${postsJson}' | python post_processing/post_processor.py`); //added
+
+      if (stderr) {
+        console.error(`Error executing Python script: ${stderr}`);
+        return JSON.stringify([]);
+      }
+
+      // Parse the JSON output from the Python script
+      const processedJson = JSON.parse(stdout);
+
+      console.log(processedJson);
+
+      return JSON.stringify(processedJson); //added
+
+
+      // return JSON.stringify(populatedPost); //commented out
     } catch (error) {
       // Handle potential errors
       console.error('Error creating a new post:', error);

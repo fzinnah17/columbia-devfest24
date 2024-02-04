@@ -37,8 +37,9 @@ def runPolitBertOnImage(image_url):
     return rating
 
 
-def check_json_attributes(json_object):
+def check_json_attributes(json_str):
     # Check if 'content' attribute is present and not empty
+    json_object = json.loads(json_str)
     if 'content' in json_object and json_object['content'] and 'image' in json_object and json_object['image']:
         ratingText = runPolitBertOnText(json_object['content'])
         ratingImage = runPolitBertOnImage(json_object['image'])

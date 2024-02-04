@@ -10,6 +10,10 @@ ml/path_to_save_model (too big)
 #datasets that are too large
 ml/very large datasets (too big)
 
+#vangarde03 .env file
+*.env
+
+
 
 #ml testing files
 oldfiles (ignore)
