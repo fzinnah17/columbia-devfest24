@@ -8,7 +8,7 @@ import connectToDB from "../db";
 import bcrypt from "bcryptjs";
 import { RegisterSchema, formSchema } from "@/schemas";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/authOptions";
 import { updateProfileSchema } from '@/schemas'
 
 Comment
@@ -27,11 +27,9 @@ export async function updateSlider(newSlider) {
   try {
     const session = await getServerSession(authOptions);
     const userId = session?.user.userId;
-    console.log(userId)
     const user = await User.findByIdAndUpdate(userId, {
       slider: newSlider,
     });
-    console.log('USER IS ', user);
   }
   catch (err) {
     throw new Error(err);
@@ -190,7 +188,6 @@ export async function getHomePosts(userId, startId) {
 export async function getAllPosts(startId) {
   await connectToDB();
   const slider = await getSlider();
-  console.log('IN GET ALL POSTS. SLIDER IS ', slider)
 
 
   if (startId) {
@@ -485,7 +482,6 @@ export async function updateProfile(userDetails) {
 }
 
 export async function changeFollowings(otherUserId, isFollowing) {
-  console.log(otherUserId, isFollowing)
   try {
     const session = await getServerSession(authOptions);
     const userId = session.user.userId;

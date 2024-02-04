@@ -51,7 +51,7 @@ export default function ProfileSection({ edit, stringData }) {
   if (status === 'loading') return <Loader className="m-auto animate-spin" />
 
   return (
-    <div className="flex justify-between items-center max-w-2xl w-full m-auto my-6">
+    <div className="flex justify-between items-center px-5 max-w-2xl w-full m-auto my-6">
       <div className="flex gap-4">
         <div className="relative w-[100px] h-[100px]">
           <Image

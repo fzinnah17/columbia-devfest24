@@ -60,7 +60,7 @@ export default function FeedList({
   ));
 
     return (
-    <div className="flex flex-col gap-6 items-center">
+    <div className="flex flex-col gap-6 items-center px-5">
 
 
         {feedType !== "user" && <NewPostCard user={JSON.parse(authuserData)} />}

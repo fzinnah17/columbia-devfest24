@@ -1,7 +1,7 @@
 import Provider from "@/components/Provider";
 import NavBar from "@/components/NavBar";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+import { authOptions } from "@/authOptions";
 import { getProfileUrl } from "@/actions/actions";
 import Footer from "@/components/Footer"
 import { Toaster } from "@/components/ui/toaster";

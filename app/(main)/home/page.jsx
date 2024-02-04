@@ -1,6 +1,6 @@
 import HomeFeed from "@/components/homefeed";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../../api/auth/[...nextauth]/route";
+import { authOptions } from "@/authOptions";
 import { getHomePosts, getUser } from "@/actions/actions";
 
 export default async function Home() {

@@ -30,7 +30,7 @@ export default function SliderDemo({ className, ...props }) {
 
 
   return (
-    <div className="flex flex-col w-[40%] mr-8">
+    <div className="flex flex-col w-full mr-8">
       <div className="flex flex-row justify-between">
         <div className="relative text-xs">{100 - alignment}%</div>
         <div className="relative text-xs">{alignment}%</div>
