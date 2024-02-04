@@ -82,6 +82,7 @@ Shoutout to these guys for the pre-trained language model: https://github.com/GU
 - Main bonus: Pre-trained language model!
 - Main limitation: This was trained on data from 4 years ago (2020) and was specifically
 tailored to tweets
+
 Also credit to this user for their dataset: https://www.kaggle.com/datasets/yoandinkov/youtubepoliticalbias/data
 - Main bonus: More data!
 - Main limitation: We used the description data from each youtube channel and the
