@@ -2,7 +2,7 @@
 A social media web app that is designed for users to create an account, login, and share their voices with the world through posts. Scroll a feed of posts from either all users or the specific users you follow. The key feature is being able to filter the content you view depending on your selected political alignment; explore different perspectives and scroll your feed while being aware of your own political biases. 
 
 ## Inspiration
-The political state of the USA is more divided than ever, and social media apps reinforce this divide by promoting similar viewpoints, creating an echo chamber. With over half of Americans relying on social media for news consumption, major tech corporations must acknowledge their social responsibility and should make people aware of their biases.
+The political state of the USA is more divided than ever, and social media apps reinforce this divide by promoting similar viewpoints, creating an echo chamber. With roughly one-half of Americans relying on social media for news consumption, major tech corporations must acknowledge their social responsibility and should make people aware of their biases.
 
 ## How we built it: ML
 
