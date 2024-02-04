@@ -49,6 +49,8 @@ const NewPostCard = ({ user }) => {
     setIsSubmitting(true);
     await createNewPost(values);
     router.refresh();
+    form.reset();
+    setIsSubmitting(false);
     ref.current.click();  // need to manually close dialog after submit
   };
 

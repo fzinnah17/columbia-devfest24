@@ -39,22 +39,26 @@ export const LoginForm = () => {
   const onSubmit = (values) => {
     setError("");
     setSuccess("");
-    
     startTransition(() => {
       async function logIn() {
         const res = await signIn('credentials', {
           redirect: false,
           username: values.username,
-          password: values.password
+          password: values.password,
         })
         if (res && res.error) {
           setError(res.error);
         }
         // if log in success, redirect to landing page
-        router.push('/home');
+        else {
+          setSuccess("Logging in...")
+          router.push('/all');
+        }
       }
       logIn();
     });
+    if (success)  router.push('/all')
+
   };
 
   return (
